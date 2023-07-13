@@ -14,26 +14,18 @@ class SmartyHelperFunctions {
       $attributes = [];
       $highDpiImagesEnabled = (bool) \Configuration::get('PS_HIGHT_DPI');
 
-      $srcAttributePrefix = $lazyLoad ? 'data-' : '';
-
       $img = $image['bySize'][$size]['url'];
 
       if ($highDpiImagesEnabled) {
         $size2x = $size . '2x';
         $img2x = str_replace($size, $size2x, $img);
-        $attributeName = $srcAttributePrefix . 'srcset';
-        $attributes[$attributeName] = "$img, $img2x 2x";
+        $attributes['srcset'] = "$img, $img2x 2x";
       } else {
-        $attributeName = $srcAttributePrefix . 'src';
-        $attributes[$attributeName] = $img;
+        $attributes['src'] = $img;
       }
 
       if ($lazyLoad) {
-        $width = $image['bySize'][$size]['width'];
-        $height = $image['bySize'][$size]['height'];
-        $placeholderSrc = self::generateImageSvgPlaceholder(['width' => $width, 'height' => $height]);
-
-        $attributes['src'] = $placeholderSrc;
+        $attributes['loading'] = 'lazy';
       }
 
       $attributesToPrint = [];
