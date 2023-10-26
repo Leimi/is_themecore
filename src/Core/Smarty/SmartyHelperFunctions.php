@@ -7,6 +7,77 @@ use Oksydan\Module\IsThemeCore\Core\Webp\WebpPictureGenerator;
 
 class SmartyHelperFunctions {
 
+    /**
+     * get src/width/height attributes for a given image object+size
+     *
+     * depending on theme settings, image url may be a cloudflare one
+     *
+     * @param array $params array of:
+     *  image: image info object (usually from a product)
+     *  size: string (eg: 'home_default')
+     *  fallback: fallback image info array (url + width + height)
+     * @return string string of attributes to print inside a <img> tag
+     */
+    public static function imageAttrs($params) {
+        $image = empty($params['image']) && isset($params['fallback']) ? $params['fallback'] : $params['image'];
+        $size = $params['size'];
+        $attributes = [];
+        $attributesToPrint = [];
+
+        if (empty($params['image']) && isset($params['fallback'])) {
+            $attributes = [
+                'src' => $params['fallback']['url'],
+                'width' => $params['fallback']['width'],
+                'height' => $params['fallback']['height'],
+            ];
+        }
+
+        // if we dont use the fallback, use the image
+        if (empty($attributes['src'])) {
+            $src = self::imageUrl($params);
+            $attributes = [
+                'src' => $src,
+                'width' => $image['bySize'][$size]['width'],
+                'height' => $image['bySize'][$size]['height'],
+            ];
+        }
+
+        foreach ($attributes as $attr => $value) {
+            $attributesToPrint[] = $attr . '="' . $value . '"';
+        }
+        return implode($attributesToPrint, PHP_EOL);
+    }
+
+    /**
+     * get image url for given image object + size
+     *
+     * depending on theme settings, image url may be a cloudflare one
+     *
+     * @param array $params array of:
+     *  image: image info object (usually from a product)
+     *  size: string (eg: 'home_default')
+     *
+     * @return string url of the image
+     */
+    public static function imageUrl($params) {
+        $image = $params['image'];
+        $size = $params['size'];
+
+        $src = $image['bySize'][$size]['url'];
+        // use cloudflare if enabled, and send to cloudflare the original, not resized image,
+        // we let them do the resizing, they do it better
+        if (\Configuration::get('THEMECORE_USE_CLOUDFLARE_IMAGES')) {
+            $originalSrc = str_replace('-' . $size, '', $src);
+            $cloudflareZone = \Configuration::get('THEMECORE_CLOUDFLARE_ZONE');
+            $src = $cloudflareZone
+                . '/cdn-cgi/image/format=auto'
+                . ',width=' . $image['bySize'][$size]['width']
+                . ',height=' . $image['bySize'][$size]['height']
+                . '/' . $originalSrc;
+        }
+
+        return $src;
+    }
     public static function generateImagesSources($params) {
       $image = $params['image'];
       $size = $params['size'];

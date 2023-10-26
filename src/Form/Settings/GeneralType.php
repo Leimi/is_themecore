@@ -74,6 +74,20 @@ class GeneralType extends TranslatorAwareType
                     'required' => false,
                     'label' => $this->trans('Preload css enabled, only working with CCC for css option enabled', 'Modules.isthemecore.Admin'),
                 ]
+            )
+            ->add('cloudflare_images',
+                SwitchType::class,
+                [
+                    'required' => false,
+                    'label' => $this->trans('Use Cloudflare for images', 'Modules.isthemecore.Admin'),
+                ]
+            )
+            ->add('cloudflare_zone',
+				TextType::class,
+                [
+                    'required' => false,
+                    'label' => $this->trans('Cloudflare zone', 'Modules.isthemecore.Admin'),
+                ]
             );
     }
 

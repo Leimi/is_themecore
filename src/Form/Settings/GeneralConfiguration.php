@@ -19,6 +19,8 @@ final class GeneralConfiguration extends AbstractMultistoreConfiguration
     public const THEMECORE_DISPLAY_LIST = 'THEMECORE_DISPLAY_LIST';
     public const THEMECORE_EARLY_HINTS = 'THEMECORE_EARLY_HINTS';
     public const THEMECORE_PRELOAD_CSS = 'THEMECORE_PRELOAD_CSS';
+    public const THEMECORE_USE_CLOUDFLARE_IMAGES = 'THEMECORE_USE_CLOUDFLARE_IMAGES';
+    public const THEMECORE_CLOUDFLARE_ZONE = 'THEMECORE_CLOUDFLARE_ZONE';
 
     /**
      * @var array<string, string>
@@ -27,6 +29,8 @@ final class GeneralConfiguration extends AbstractMultistoreConfiguration
         'list_display_settings' => self::THEMECORE_DISPLAY_LIST,
         'early_hints' => self::THEMECORE_EARLY_HINTS,
         'preload_css' => self::THEMECORE_PRELOAD_CSS,
+        'cloudflare_images' => self::THEMECORE_USE_CLOUDFLARE_IMAGES,
+        'cloudflare_zone' => self::THEMECORE_CLOUDFLARE_ZONE,
     ];
 
     /**
