@@ -70,9 +70,9 @@ class SmartyHelperFunctions {
             $originalSrc = str_replace('-' . $size, '', $src);
             $cloudflareZone = \Configuration::get('THEMECORE_CLOUDFLARE_ZONE');
             $src = $cloudflareZone
-                . '/cdn-cgi/image/format=auto'
+                . '/cdn-cgi/image/format=auto,fit=scale-down'
                 . ',width=' . $image['bySize'][$size]['width']
-                . ',height=' . $image['bySize'][$size]['height']
+                . (!empty($image['bySize'][$size]['height']) ? ',height=' . $image['bySize'][$size]['height'] : '')
                 . '/' . $originalSrc;
         }
 
