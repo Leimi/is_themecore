@@ -43,7 +43,6 @@ class SettingsController extends FrameworkBundleAdminController
 
         return $this->render('@Modules/is_themecore/views/templates/back/components/layouts/settings.html.twig', [
             'general_form' => $generalForm->createView(),
-            'webp_form' => $webpForm->createView(),
         ]);
     }
 
