@@ -78,6 +78,12 @@ class SmartyHelperFunctions {
 
         return $src;
     }
+
+    /**
+     * manu's note: not used anymore, kept for reference but all webp related stuff in the plugin is disabled
+     *
+     * @deprecated
+     */
     public static function generateImagesSources($params) {
       $image = $params['image'];
       $size = $params['size'];
@@ -108,6 +114,11 @@ class SmartyHelperFunctions {
       return implode($attributesToPrint, PHP_EOL);
     }
 
+    /**
+     * manu's note: not used anymore, kept for reference but all webp related stuff in the plugin is disabled
+     *
+     * @deprecated
+     */
     public static function generateImageSvgPlaceholder($params) {
       $width = $params['width'];
       $height = $params['height'];
@@ -135,6 +146,11 @@ class SmartyHelperFunctions {
       return $url;
     }
 
+    /**
+     * manu's note: not used anymore, kept for reference but all webp related stuff in the plugin is disabled
+     *
+     * @deprecated
+     */
     public static function imagesBlock($params, $content, $smarty)
     {
       $webpEnabled = isset($params['webpEnabled']) ? $params['webpEnabled'] : \Configuration::get(WebpConfiguration::THEMECORE_WEBP_ENABLED);
@@ -152,6 +168,11 @@ class SmartyHelperFunctions {
       return $content;
     }
 
+    /**
+     * manu's note: not used anymore, kept for reference but all webp related stuff in the plugin is disabled
+     *
+     * @deprecated
+     */
     public static function cmsImagesBlock($params, $content, $smarty)
     {
       $doc = new \DOMDocument();
