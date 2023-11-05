@@ -4,6 +4,7 @@ namespace Oksydan\Module\IsThemeCore\Core\Smarty;
 
 use Oksydan\Module\IsThemeCore\Form\Settings\WebpConfiguration;
 use Oksydan\Module\IsThemeCore\Core\Webp\WebpPictureGenerator;
+use Symfony\Component\DomCrawler\Crawler;
 
 class SmartyHelperFunctions {
 
@@ -77,6 +78,57 @@ class SmartyHelperFunctions {
         }
 
         return $src;
+    }
+
+    /**
+     * block to replace img urls with (maybe) cloudflare ones in given html content
+     *
+     * @param array $params width: max width of images
+     * @param null|string $content html content in smarty block. Can be null depending on block calls
+     * @return string html content with maybe replaced img urls
+     */
+    public static function replaceImageUrls($params, $content) {
+        if (is_null($content)) {
+            return "";
+        }
+        if (empty($params['width']) || !\Configuration::get('THEMECORE_USE_CLOUDFLARE_IMAGES')) {
+            return $content;
+        }
+        $maxWidth = $params['width'];
+        $dom = new Crawler($content);
+        $imgs = $dom->filter('img[src^="/"], img[src^="' . _PS_BASE_URL_ . '"]');
+        foreach ($imgs as $node) {
+            $width = $node->getAttribute('width');
+            $height = $node->getAttribute('height');
+            $imgUrlParams = [
+                'image' => [
+                    'bySize' => [
+                        'auto' => [
+                            'url' => $node->getAttribute('src'),
+                            'width' => null,
+                            'height' => null,
+                        ]
+                    ]
+                ],
+                'size' => 'auto',
+            ];
+            if (empty($width) || strpos($width, '%') !== false) {
+                $node->setAttribute('width', $maxWidth);
+                $node->removeAttribute('height');
+                $imgUrlParams['image']['bySize']['auto']['width'] = $maxWidth;
+            }
+            if (!empty($width) && !empty($height)) {
+                $ratio = $width / $height;
+                $newWidth = min($width, $maxWidth);
+                $newHeight = intval($newWidth / $ratio);
+                $node->setAttribute('width', $newWidth);
+                $node->setAttribute('height', $newHeight);
+                $imgUrlParams['image']['bySize']['auto']['width'] = $newWidth;
+                $imgUrlParams['image']['bySize']['auto']['height'] = $newHeight;
+            }
+            $node->setAttribute('src', self::imageUrl($imgUrlParams));
+        }
+        return $dom->html();
     }
 
     /**

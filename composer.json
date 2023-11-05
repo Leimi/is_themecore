@@ -13,7 +13,9 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "rosell-dk/webp-convert": "^2.9"
+        "rosell-dk/webp-convert": "^2.9",
+        "symfony/css-selector": "^6.3",
+        "symfony/dom-crawler": "^6.3"
     },
     "require-dev": {
         "prestashop/php-dev-tools": "^4.2",
@@ -28,7 +30,11 @@
         }
     },
     "config": {
-        "prepend-autoloader": false
+        "prepend-autoloader": false,
+        "allow-plugins": {
+            "phpro/grumphp-shim": false,
+            "phpstan/extension-installer": false
+        }
     },
     "extra": {
         "grumphp": {
