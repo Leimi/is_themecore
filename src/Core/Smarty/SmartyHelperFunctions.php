@@ -88,7 +88,7 @@ class SmartyHelperFunctions {
      * @return string html content with maybe replaced img urls
      */
     public static function replaceImageUrls($params, $content) {
-        if (is_null($content)) {
+        if (is_null($content) || empty(trim($content))) {
             return "";
         }
         if (empty($params['width']) || !\Configuration::get('THEMECORE_USE_CLOUDFLARE_IMAGES')) {
@@ -128,7 +128,12 @@ class SmartyHelperFunctions {
             }
             $node->setAttribute('src', self::imageUrl($imgUrlParams));
         }
-        return $dom->html();
+        try {
+            return $dom->html();
+        } catch (\InvalidArgumentException $e) {
+            return $content;
+        }
+
     }
 
     /**
