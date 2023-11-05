@@ -14,8 +14,8 @@
     "require": {
         "php": ">=7.1.0",
         "rosell-dk/webp-convert": "^2.9",
-        "symfony/css-selector": "^6.3",
-        "symfony/dom-crawler": "^6.3"
+        "symfony/dom-crawler": "^5.4",
+        "symfony/css-selector": "^5.4"
     },
     "require-dev": {
         "prestashop/php-dev-tools": "^4.2",
