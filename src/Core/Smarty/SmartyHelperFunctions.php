@@ -96,7 +96,7 @@ class SmartyHelperFunctions {
         }
         $maxWidth = $params['width'];
         $dom = new Crawler($content);
-        $imgs = $dom->filter('img[src^="/"], img[src^="' . _PS_BASE_URL_ . '"]');
+        $imgs = $dom->filter('img[src^="/"], img[src^="' . \Context::getContext()->shop->getBaseURL(true) . '"]');
         foreach ($imgs as $node) {
             $width = $node->getAttribute('width');
             $height = $node->getAttribute('height');
