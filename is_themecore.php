@@ -28,6 +28,9 @@ class Is_themecore extends Module
         WebpConfiguration::THEMECORE_WEBP_QUALITY => 90,
         WebpConfiguration::THEMECORE_WEBP_CONVERTER => null,
         WebpConfiguration::THEMECORE_WEBP_SHARPYUV => false,
+        GeneralConfiguration::THEMECORE_USE_CLOUDFLARE_IMAGES => false,
+        GeneralConfiguration::THEMECORE_CLOUDFLARE_RESIZED_IMAGES => false,
+        GeneralConfiguration::THEMECORE_CLOUDFLARE_ZONE => "",
     ];
 
     /**

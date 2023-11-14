@@ -82,8 +82,16 @@ class GeneralType extends TranslatorAwareType
                     'label' => $this->trans('Use Cloudflare for images', 'Modules.isthemecore.Admin'),
                 ]
             )
+            ->add('cloudflare_resized_images',
+                SwitchType::class,
+                [
+                    'required' => false,
+                    'label' => $this->trans('Send \'cloudflare_default\' images to Cloudflare instead of original images', 'Modules.isthemecore.Admin'),
+                    'help' => $this->trans('Faster image loading when not hitting Cloudflare cache, at the cost of worse image quality', 'Modules.isthemecore.Admin'),
+                ]
+            )
             ->add('cloudflare_zone',
-				TextType::class,
+                TextType::class,
                 [
                     'required' => false,
                     'label' => $this->trans('Cloudflare zone', 'Modules.isthemecore.Admin'),

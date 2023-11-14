@@ -67,14 +67,36 @@ class SmartyHelperFunctions {
         $src = $image['bySize'][$size]['url'];
         // use cloudflare if enabled, and send to cloudflare the original, not resized image,
         // we let them do the resizing, they do it better
+
         if (\Configuration::get('THEMECORE_USE_CLOUDFLARE_IMAGES')) {
             $originalSrc = str_replace('-' . $size, '', $src);
             $cloudflareZone = \Configuration::get('THEMECORE_CLOUDFLARE_ZONE');
+
+            $srcToSend = $originalSrc;
+
+            /**
+             * we can enable an option to send an already resized image to cloudflare
+             * instead of the original one. Because uploaded images in the admin can be big, like 10Mb big.
+             * So we have a 'cloudflare_default' image thumbnail that is generated that
+             * resizes stuff at 3000x3000 max.
+             */
+            $useResizedImage = \Configuration::get('THEMECORE_CLOUDFLARE_RESIZED_IMAGES');
+            if ($useResizedImage && !empty($image['bySize']['cloudflare_default'])) {
+                // compare filesize, as the resized one can be heavier sometimes…
+                $originalPath = substr($originalSrc, strpos($originalSrc, '/img/') + 5);
+                $forCloudflareSrc = $image['bySize']['cloudflare_default']['url'];
+                $forCloudflarePath = substr($forCloudflareSrc, strpos($forCloudflareSrc, '/img/') + 5);
+
+                if (filesize(_PS_IMG_DIR_ . $originalPath) > filesize(_PS_IMG_DIR_ . $forCloudflarePath)) {
+                    $srcToSend = $forCloudflareSrc;
+                }
+            }
+
             $src = $cloudflareZone
                 . '/cdn-cgi/image/format=auto,fit=scale-down'
                 . ',width=' . $image['bySize'][$size]['width']
                 . (!empty($image['bySize'][$size]['height']) ? ',height=' . $image['bySize'][$size]['height'] : '')
-                . '/' . $originalSrc;
+                . '/' . $srcToSend;
         }
 
         return $src;
