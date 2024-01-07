@@ -93,10 +93,10 @@ class SmartyHelperFunctions {
             }
 
             $src = $cloudflareZone
-                . '/cdn-img-worker/image/format=auto,fit=scale-down'
-                . ',width=' . $image['bySize'][$size]['width']
-                . (!empty($image['bySize'][$size]['height']) ? ',height=' . $image['bySize'][$size]['height'] : '')
-                . '/' . $srcToSend;
+                . '/cdn-img-worker'
+                . '?width=' . $image['bySize'][$size]['width']
+                . (!empty($image['bySize'][$size]['height']) ? '&height=' . $image['bySize'][$size]['height'] : '')
+                . '&image=' . $srcToSend;
         }
 
         return $src;
