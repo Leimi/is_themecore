@@ -80,6 +80,7 @@ class GeneralType extends TranslatorAwareType
                 [
                     'required' => false,
                     'label' => $this->trans('Use Cloudflare for images', 'Modules.isthemecore.Admin'),
+                    'help' => $this->trans('⚠️ You must clear the cache in Performances settings after changing this', 'Modules.isthemecore.Admin'),
                 ]
             )
             ->add('cloudflare_resized_images',
