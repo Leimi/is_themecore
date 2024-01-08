@@ -93,7 +93,7 @@ class SmartyHelperFunctions {
             }
 
             $src = $cloudflareZone
-                . '/cdn-img-worker'
+                . '/cdn-img-worker/'
                 . '?width=' . $image['bySize'][$size]['width']
                 . (!empty($image['bySize'][$size]['height']) ? '&height=' . $image['bySize'][$size]['height'] : '')
                 . '&image=' . $srcToSend;
