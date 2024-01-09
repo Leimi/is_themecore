@@ -92,11 +92,21 @@ class SmartyHelperFunctions {
                 }
             }
 
-            $src = $cloudflareZone
-                . '/cdn-img-worker/'
-                . '?width=' . $image['bySize'][$size]['width']
-                . (!empty($image['bySize'][$size]['height']) ? '&height=' . $image['bySize'][$size]['height'] : '')
-                . '&image=' . $srcToSend;
+            $isImageAbsolutePath = substr($srcToSend, 0, 1) === "/";
+            $useWorker = !$isImageAbsolutePath && strpos($srcToSend, $cloudflareZone) !== 0;
+            if ($useWorker) {
+                $src = $cloudflareZone
+                    . '/cdn-img-worker/'
+                    . '?width=' . $image['bySize'][$size]['width']
+                    . (!empty($image['bySize'][$size]['height']) ? '&height=' . $image['bySize'][$size]['height'] : '')
+                    . '&image=' . $srcToSend;
+            } else {
+                $src = $cloudflareZone
+                    . '/cdn-cgi/image/format=auto,fit=scale-down'
+                    . ',width=' . $image['bySize'][$size]['width']
+                    . (!empty($image['bySize'][$size]['height']) ? ',height=' . $image['bySize'][$size]['height'] : '')
+                    . ($isImageAbsolutePath ? $srcToSend : '/' . $srcToSend);
+            }
         }
 
         return $src;
