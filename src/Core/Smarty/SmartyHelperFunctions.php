@@ -128,7 +128,9 @@ class SmartyHelperFunctions {
         }
         $maxWidth = $params['width'];
         $dom = new Crawler($content);
-        $imgs = $dom->filter('img[src^="/"], img[src^="' . \Context::getContext()->shop->getBaseURL(true) . '"]');
+        $cloudflareZone = \Configuration::get('THEMECORE_CLOUDFLARE_ZONE');
+        $currentWebsite = \Context::getContext()->shop->getBaseURL(true);
+        $imgs = $dom->filter('img[src^="/"], img[src^="' . $currentWebsite . '"], img[src^="' . $cloudflareZone . '"]');
         foreach ($imgs as $node) {
             $width = $node->getAttribute('width');
             $height = $node->getAttribute('height');
