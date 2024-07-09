@@ -163,7 +163,7 @@ class SmartyHelperFunctions {
             $node->setAttribute('src', self::imageUrl($imgUrlParams));
         }
         try {
-            return $dom->html();
+            return $dom->filter('body')->html();
         } catch (\InvalidArgumentException $e) {
             return $content;
         }
